@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,9 +71,10 @@ class AuthControllerTest {
     @Test
     @DisplayName("4. POST /api/auth/registro crea un usuario válido y retorna HTTP 201 con JWT")
     void testRegistroExitoso() throws Exception {
+        String uniqueEmail = "carlos." + UUID.randomUUID().toString().substring(0, 8) + "@gmail.com";
         RegistroRequest req = new RegistroRequest(
                 "Carlos Valenzuela",
-                "carlos.valenzuela.test@gmail.com",
+                uniqueEmail,
                 "claveSegura123",
                 LocalDate.of(1995, 5, 20)
         );
@@ -84,7 +85,7 @@ class AuthControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.token", notNullValue()))
                 .andExpect(jsonPath("$.usuario.nombre", is("Carlos Valenzuela")))
-                .andExpect(jsonPath("$.usuario.email", is("carlos.valenzuela.test@gmail.com")))
+                .andExpect(jsonPath("$.usuario.email", is(uniqueEmail)))
                 .andExpect(jsonPath("$.usuario.rol", is("ROLE_CLIENTE")))
                 .andExpect(jsonPath("$.usuario.esDuoc", is(false)));
     }
@@ -92,9 +93,10 @@ class AuthControllerTest {
     @Test
     @DisplayName("5. POST /api/auth/registro con menor de 18 años es rechazado con HTTP 400")
     void testRegistroMenorDeEdad() throws Exception {
+        String uniqueEmail = "menor." + UUID.randomUUID().toString().substring(0, 8) + "@test.com";
         RegistroRequest req = new RegistroRequest(
                 "Menor de Edad",
-                "menor@test.com",
+                uniqueEmail,
                 "claveSegura123",
                 LocalDate.now().minusYears(15) // 15 años
         );
@@ -108,9 +110,10 @@ class AuthControllerTest {
     @Test
     @DisplayName("6. POST /api/auth/registro con email Duoc activa automáticamente esDuoc = true")
     void testRegistroEmailDuoc() throws Exception {
+        String uniqueEmail = "estudiante." + UUID.randomUUID().toString().substring(0, 8) + "@duocuc.cl";
         RegistroRequest req = new RegistroRequest(
                 "Estudiante Duoc",
-                "estudiante.nuevo@duocuc.cl",
+                uniqueEmail,
                 "claveSegura123",
                 LocalDate.of(2000, 1, 15)
         );

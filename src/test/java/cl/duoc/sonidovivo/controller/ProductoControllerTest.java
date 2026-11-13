@@ -40,12 +40,14 @@ class ProductoControllerTest {
     }
 
     @Test
-    @DisplayName("2. GET /api/productos/1 retorna el producto por ID")
+    @DisplayName("2. GET /api/productos/{id} retorna el producto por ID")
     void testBuscarPorIdExistente() throws Exception {
-        mockMvc.perform(get("/api/productos/1")
+        Long primerId = repository.findAll().getFirst().getId();
+
+        mockMvc.perform(get("/api/productos/" + primerId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
+                .andExpect(jsonPath("$.id", is(primerId.intValue())));
     }
 
     @Test
@@ -89,10 +91,11 @@ class ProductoControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("6. PUT /api/productos/{id} con rol ADMIN actualiza los campos")
     void testActualizarProducto() throws Exception {
+        Long primerId = repository.findAll().getFirst().getId();
         Producto cambios = new Producto(null, "Shure SM7B - Edición 50 Aniversario", 459990, "Micrófonos",
                 "/img/sm7b.webp", "Edición conmemorativa.", 10);
 
-        mockMvc.perform(put("/api/productos/2")
+        mockMvc.perform(put("/api/productos/" + primerId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cambios)))
                 .andExpect(status().isOk())
