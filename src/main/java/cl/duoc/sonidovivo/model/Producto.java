@@ -91,6 +91,16 @@ public class Producto {
         this.imagen = imagen;
     }
 
+    public String getImagenUrl() {
+        return imagen;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        if (imagenUrl != null && !imagenUrl.isBlank()) {
+            this.imagen = imagenUrl;
+        }
+    }
+
     public String getDescripcion() {
         return descripcion;
     }

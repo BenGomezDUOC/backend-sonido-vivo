@@ -63,6 +63,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Permitir preflight OPTIONS para compatibilidad total con navegadores y React
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Rutas públicas de autenticación y Swagger
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
