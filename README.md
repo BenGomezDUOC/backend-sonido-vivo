@@ -7,6 +7,13 @@
 
 ---
 
+## 🔗 Repositorio del Frontend React
+
+El frontend correspondiente a esta API REST se encuentra alojado en su propio repositorio:  
+👉 **[Repositorio Frontend React — Tienda-Sonido-Vivo](https://github.com/BenGomezDUOC/Tienda-Sonido-Vivo)**
+
+---
+
 ## 🏛️ Arquitectura del Sistema
 
 El backend implementa una arquitectura en capas desacoplada con seguridad sin estado basada en JWT y persistencia relacional en MySQL:
